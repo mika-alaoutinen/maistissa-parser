@@ -6,22 +6,22 @@ cabal-version: 1.12
 
 name:           maistissa-parser
 version:        0.1.0.0
-description:    Please see the README on GitHub at <https://github.com/githubuser/maistissa-parser#readme>
-homepage:       https://github.com/githubuser/maistissa-parser#readme
-bug-reports:    https://github.com/githubuser/maistissa-parser/issues
-author:         Author name here
-maintainer:     example@example.com
-copyright:      2022 Author name here
+synopsis:       Parses text files containing wine tasting notes into JSON.
+description:    Please see the README on GitHub at <https://github.com/mika-alaoutinen/maistissa-parser#readme>
+category:       Web
+homepage:       https://github.com/mika-alaoutinen/maistissa-parser#readme
+bug-reports:    https://github.com/mika-alaoutinen/maistissa-parser/issues
+author:         Mika Alaoutinen
+maintainer:     Mika Alaoutinen
+copyright:      2022 Mika Alaoutinen
 license:        BSD3
-license-file:   LICENSE
 build-type:     Simple
 extra-source-files:
     README.md
-    ChangeLog.md
 
 source-repository head
   type: git
-  location: https://github.com/githubuser/maistissa-parser
+  location: https://github.com/mika-alaoutinen/maistissa-parser
 
 library
   exposed-modules:
