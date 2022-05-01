@@ -1,8 +1,8 @@
-resolver:
-  url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/19/2.yaml
+resolver: lts-19.5
 
 packages:
   - .
 
 system-ghc: true
+
 require-stack-version: ">=2.7"

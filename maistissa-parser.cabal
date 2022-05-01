@@ -25,7 +25,10 @@ source-repository head
 
 library
   exposed-modules:
-      Lib
+      FileReader
+      Lines
+      Parser
+      WineParser
   other-modules:
       Paths_maistissa_parser
   hs-source-dirs:
