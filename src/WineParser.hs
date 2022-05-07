@@ -1,15 +1,7 @@
 module WineParser where
 
 import Lines (trim)
-import qualified Parser
-
-data Wine = Wine
-  { name :: String,
-    country :: String,
-    description :: [String],
-    foodPairings :: [String]
-  }
-  deriving (Show, Eq)
+import qualified Parser as P
 
 data WineProperty
   = Name String
@@ -26,6 +18,9 @@ instance Show Key where
   show WineName = "VIINI:"
   show WineCountry = "Maa:"
 
+name :: P.Parser WineProperty
+name = P.string (show WineName) >> pure (Name $ show WineName)
+
 -- Test properties
 wineName = "VIINI: Apothic Dark 2015"
 
@@ -33,8 +28,8 @@ wineCountry = "Maa: Yhdysvallat"
 
 parseString :: Key -> String -> Maybe String
 parseString key input = do
-  let parser = Parser.string $ show key
-  (_, name) <- Parser.parse parser input
+  let parser = P.string $ show key
+  (_, name) <- P.parse parser input
   return (trim name)
 
 parseName :: String -> Maybe WineProperty

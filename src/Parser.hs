@@ -3,7 +3,9 @@
 -- Based on this tutorial:
 -- https://serokell.io/blog/parser-combinators-in-haskell
 
-module Parser (Parser, parse, char, string) where
+module Parser (Parser, parse, char, isAlphabet, isSpace, string) where
+
+import qualified Data.Char as Char
 
 newtype Parser a = Parser {parse :: String -> Maybe (a, String)}
 
@@ -39,3 +41,9 @@ char input = satisfy (== input)
 
 string :: String -> Parser String
 string = traverse char
+
+isAlphabet :: Parser Char
+isAlphabet = satisfy Char.isAlpha
+
+isSpace :: Parser Char
+isSpace = satisfy Char.isSpace
