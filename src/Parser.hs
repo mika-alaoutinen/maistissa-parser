@@ -1,7 +1,8 @@
 {-# LANGUAGE LambdaCase #-}
 
--- Based on this tutorial:
+-- Based on:
 -- https://serokell.io/blog/parser-combinators-in-haskell
+-- https://github.com/japiirainen/microparser/blob/main/src/MicroParser.hs
 
 module Parser (Parser, parse, char, isAlphabet, isSpace, string) where
 
