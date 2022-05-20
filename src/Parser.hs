@@ -6,6 +6,7 @@
 
 module Parser (Parser, parse, char, isAlphabet, isSpace, string) where
 
+import Control.Applicative
 import qualified Data.Char as Char
 
 newtype Parser a = Parser {parse :: String -> Maybe (a, String)}
@@ -30,6 +31,13 @@ instance Monad Parser where
     (parsed, unparsed) <- parser input
     parse (continuation parsed) unparsed
 
+instance Alternative Parser where
+  empty = Parser $ const Nothing
+
+  Parser p1 <|> Parser p2 = Parser $ \input -> case p1 input of
+    Just result -> Just result
+    Nothing -> p2 input
+
 satisfy :: (Char -> Bool) -> Parser Char
 satisfy predicate = Parser $ \case
   [] -> Nothing
@@ -45,6 +53,9 @@ string = traverse char
 
 isAlphabet :: Parser Char
 isAlphabet = satisfy Char.isAlpha
+
+isDigit :: Parser Char
+isDigit = satisfy Char.isDigit
 
 isSpace :: Parser Char
 isSpace = satisfy Char.isSpace
