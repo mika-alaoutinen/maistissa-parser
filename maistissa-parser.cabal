@@ -27,7 +27,9 @@ library
   exposed-modules:
       FileReader
       Lines
-      Parser
+      Parser.Functions
+      Parser.Parser
+      Wine
       WineParser
   other-modules:
       Paths_maistissa_parser
