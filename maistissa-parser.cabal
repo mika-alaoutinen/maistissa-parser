@@ -27,8 +27,8 @@ library
   exposed-modules:
       FileReader
       Lines
-      Parser.Functions
       Parser.Parser
+      Parser.Predicates
       Wine
       WineParser
   other-modules:

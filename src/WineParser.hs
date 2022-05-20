@@ -1,7 +1,7 @@
 module WineParser where
 
 import Lines (trim)
-import qualified Parser.Functions as P
+import qualified Parser.Predicates as P
 import Parser.Parser
 
 data WineProperty

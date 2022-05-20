@@ -1,6 +1,6 @@
 {-# LANGUAGE LambdaCase #-}
 
-module Parser.Functions where
+module Parser.Predicates where
 
 import qualified Data.Char as Char
 import Parser.Parser
