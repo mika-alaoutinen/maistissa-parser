@@ -1,4 +1,4 @@
-module FileReader where
+module Reader where
 
 import Data.List
 import Data.Maybe

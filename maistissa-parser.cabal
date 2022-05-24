@@ -25,10 +25,11 @@ source-repository head
 
 library
   exposed-modules:
-      FileReader
+      Files.Reader
       Lines
       Parser.Parser
       Parser.Predicates
+      Temp
       Wine
       WineParser
   other-modules:
