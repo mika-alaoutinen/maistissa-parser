@@ -2,7 +2,8 @@
 
 module Parser.Predicates where
 
-import qualified Data.Char as Char
+import Control.Applicative (Alternative (many))
+import Data.Char
 import Parser.Parser
 
 satisfy :: (Char -> Bool) -> Parser Char
@@ -12,17 +13,30 @@ satisfy predicate = Parser $ \case
     | predicate x -> Just (x, xs)
     | otherwise -> Nothing
 
+alphabet :: Parser Char
+alphabet = satisfy isAlpha
+
 char :: Char -> Parser Char
 char input = satisfy (== input)
+
+digit :: Parser Char
+digit = satisfy isDigit
+
+space :: Parser Char
+space = satisfy isSpace
+
+spaces :: Parser String
+spaces = many space
 
 string :: String -> Parser String
 string = traverse char
 
-isAlphabet :: Parser Char
-isAlphabet = satisfy Char.isAlpha
+text :: String
+text = "key: value"
 
-isDigit :: Parser Char
-isDigit = satisfy Char.isDigit
+newtype KV = KV (String, String) deriving (Show)
 
-isSpace :: Parser Char
-isSpace = satisfy Char.isSpace
+pKv :: Parser KV
+pKv = KV <$> parseKv
+  where
+    parseKv = (,) <$> many alphabet <* char ':' <* spaces <*> many alphabet
