@@ -13,22 +13,10 @@ data WineProperty
   | Url (Maybe String)
   deriving (Show, Eq)
 
-data Key = WineName | WineCountry
-
-instance Show Key where
-  show WineName = "VIINI:"
-  show WineCountry = "Maa:"
-
 -- Test properties
 wineName = "VIINI: Apothic Dark 2015"
 
 wineCountry = "Maa: Yhdysvallat"
-
-parseString :: Key -> String -> Maybe String
-parseString key input = do
-  let parser = P.string $ show key
-  (_, name) <- runParser parser input
-  return (trim name)
 
 parseName :: String -> Maybe WineProperty
 parseName input = do
