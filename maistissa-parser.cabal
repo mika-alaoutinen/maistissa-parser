@@ -25,12 +25,11 @@ source-repository head
 
 library
   exposed-modules:
-      Files.Reader
+      IO.FileReader
       Lines
       Model.Wine
       Parser.Parser
       Parser.Predicates
-      Temp
       WineParser
   other-modules:
       Paths_maistissa_parser

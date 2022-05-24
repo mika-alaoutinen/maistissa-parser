@@ -1,4 +1,4 @@
-module Wine where
+module Model.Wine where
 
 data Wine = Wine
   { name :: String,
