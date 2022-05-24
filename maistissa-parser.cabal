@@ -27,10 +27,10 @@ library
   exposed-modules:
       Files.Reader
       Lines
+      Model.Wine
       Parser.Parser
       Parser.Predicates
       Temp
-      Wine
       WineParser
   other-modules:
       Paths_maistissa_parser
