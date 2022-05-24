@@ -31,12 +31,9 @@ spaces = many space
 string :: String -> Parser String
 string = traverse char
 
-text :: String
-text = "key: value"
+newtype KeyValue = KV (String, String) deriving (Show)
 
-newtype KV = KV (String, String) deriving (Show)
-
-pKv :: Parser KV
-pKv = KV <$> parseKv
+withPrefix :: String -> Parser KeyValue
+withPrefix prefix = KV <$> parseKv
   where
-    parseKv = (,) <$> many alphabet <* char ':' <* spaces <*> many alphabet
+    parseKv = (,) <$> string prefix <* char ':' <* spaces <*> many alphabet
