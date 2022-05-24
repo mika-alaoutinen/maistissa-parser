@@ -1,11 +1,12 @@
-{-# LANGUAGE LambdaCase #-}
-
--- Based on this tutorial:
+-- Based on:
 -- https://serokell.io/blog/parser-combinators-in-haskell
+-- https://github.com/japiirainen/microparser/blob/main/src/MicroParser.hs
 
-module Parser (Parser, parse, char, string) where
+module Parser.Parser (Parser (..)) where
 
-newtype Parser a = Parser {parse :: String -> Maybe (a, String)}
+import Control.Applicative
+
+newtype Parser a = Parser {runParser :: String -> Maybe (a, String)}
 
 instance Functor Parser where
   fmap fn (Parser parser) = Parser $ \input -> do
@@ -25,17 +26,11 @@ instance Monad Parser where
 
   Parser parser >>= continuation = Parser $ \input -> do
     (parsed, unparsed) <- parser input
-    parse (continuation parsed) unparsed
+    runParser (continuation parsed) unparsed
 
-satisfy :: (Char -> Bool) -> Parser Char
-satisfy predicate = Parser $ \case
-  [] -> Nothing
-  x : xs
-    | predicate x -> Just (x, xs)
-    | otherwise -> Nothing
+instance Alternative Parser where
+  empty = Parser $ const Nothing
 
-char :: Char -> Parser Char
-char input = satisfy (== input)
-
-string :: String -> Parser String
-string = traverse char
+  Parser p1 <|> Parser p2 = Parser $ \input -> case p1 input of
+    Just result -> Just result
+    Nothing -> p2 input

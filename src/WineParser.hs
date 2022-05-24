@@ -1,15 +1,8 @@
 module WineParser where
 
 import Lines (trim)
-import qualified Parser
-
-data Wine = Wine
-  { name :: String,
-    country :: String,
-    description :: [String],
-    foodPairings :: [String]
-  }
-  deriving (Show, Eq)
+import Parser.Parser
+import qualified Parser.Predicates as P
 
 data WineProperty
   = Name String
@@ -20,9 +13,19 @@ data WineProperty
   | Url (Maybe String)
   deriving (Show, Eq)
 
+-- Test properties
+wineName = "VIINI: Apothic Dark 2015"
+
+wineCountry = "Maa: Yhdysvallat"
+
 parseName :: String -> Maybe WineProperty
 parseName input = do
-  (prefix, name) <- Parser.parse (Parser.string "VIINI:") input
-  return (Name $ trim name)
+  let parser = P.withPrefix_ "VIINI"
+  (name, unparsed) <- runParser parser input
+  return $ Name name
 
-wineName = "VIINI: Apothic Dark 2015"
+parseCountry :: String -> Maybe WineProperty
+parseCountry input = do
+  let parser = P.withPrefix_ "Maa"
+  (country, unparsed) <- runParser parser input
+  return $ Country country
