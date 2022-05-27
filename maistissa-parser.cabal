@@ -27,6 +27,7 @@ library
   exposed-modules:
       IO.FileReader
       Model.Wine
+      Parser.Combinators
       Parser.Parser
       Parser.Predicates
       WineParser

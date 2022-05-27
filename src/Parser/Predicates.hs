@@ -1,6 +1,6 @@
 {-# LANGUAGE LambdaCase #-}
 
-module Parser.Predicates (withPrefix, withPrefix_) where
+module Parser.Predicates (KeyValue, newline, withPrefix, withPrefix_) where
 
 import Control.Applicative
 import Data.Char
@@ -25,9 +25,6 @@ string = traverse char
 anyChar :: Parser Char
 anyChar = satisfy isPrint
 
-newline :: Parser Char
-newline = char '\n' <|> (char '\r' *> char '\n')
-
 space :: Parser Char
 space = satisfy isSpace
 
@@ -42,6 +39,9 @@ spaces :: Parser String
 spaces = many space
 
 -- Exports
+newline :: Parser Char
+newline = char '\n' <|> (char '\r' *> char '\n')
+
 withPrefix :: String -> Parser KeyValue
 withPrefix prefix = KV <$> parseKv
   where
@@ -49,20 +49,3 @@ withPrefix prefix = KV <$> parseKv
 
 withPrefix_ :: String -> Parser String
 withPrefix_ prefix = string prefix <* stripColon *> anyString
-
-testStr = "VIINI: Apothic Dark 2015\nVIINI: Gato Negro"
-
-sepBy1 :: Parser a -> Parser b -> Parser [a]
-sepBy1 parser separator = fmap (:) parser <*> parsers
-  where
-    parsers = many (separator *> parser)
-
--- Exports
-sepBy :: Parser a -> Parser b -> Parser [a]
-sepBy parser separator = sepBy1 parser separator <|> pure []
-
-pKvs :: Parser [KeyValue]
-pKvs = withPrefix "VIINI" `sepBy` newline
-
-names :: Parser [String]
-names = withPrefix_ "VIINI" `sepBy` newline
