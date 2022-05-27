@@ -28,11 +28,11 @@ alphabet = satisfy isAlpha
 anyChar :: Parser Char
 anyChar = satisfy isAscii
 
-notLineBreak :: Parser Char
-notLineBreak = satisfy (/= '\n')
-
 digit :: Parser Char
 digit = satisfy isDigit
+
+notLineBreak :: Parser Char
+notLineBreak = satisfy (/= '\n')
 
 space :: Parser Char
 space = satisfy isSpace
@@ -44,17 +44,17 @@ stripColon = spaces *> char ':' <* spaces
 anyString :: Parser String
 anyString = many anyChar
 
-untilLineBreak :: Parser String
-untilLineBreak = many notLineBreak
-
 spaces :: Parser String
 spaces = many space
+
+untilLineBreak :: Parser String
+untilLineBreak = many notLineBreak
 
 -- Exports
 withPrefix :: String -> Parser KeyValue
 withPrefix prefix = KV <$> parseKv
   where
-    parseKv = (,) <$> string prefix <* stripColon <*> anyString
+    parseKv = (,) <$> string prefix <* stripColon <*> untilLineBreak
 
 withPrefix_ :: String -> Parser String
 withPrefix_ prefix = string prefix <* stripColon *> untilLineBreak
@@ -69,7 +69,7 @@ sepBy :: Parser a -> Parser b -> Parser [a]
 sepBy parser separator = sepBy1 parser separator <|> pure []
 
 pKvs :: Parser [KeyValue]
-pKvs = withPrefix "VIINI" `sepBy` char ','
+pKvs = withPrefix "VIINI" `sepBy` char '\n'
 
 names :: Parser [String]
 names = withPrefix_ "VIINI" `sepBy` char '\n'
