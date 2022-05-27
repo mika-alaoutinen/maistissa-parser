@@ -6,29 +6,22 @@ import Parser.Predicates
 
 testStr = "VIINI: Apothic Dark 2015\nMaa: Espanja"
 
-data Wine = Name String | Country String deriving (Show, Eq)
-
-sepBy1 :: Parser a -> Parser b -> Parser [a]
-sepBy1 parser separator = fmap (:) parser <*> parsers
-  where
-    parsers = many (separator *> parser)
+data WineProp = Name String | Country String deriving (Show, Eq)
 
 sepBy :: Parser a -> Parser b -> Parser [a]
-sepBy parser separator = sepBy1 parser separator <|> pure []
+sepBy parser separator = (:) <$> parser <*> many (separator *> parser)
 
-pKvs :: Parser [KeyValue]
-pKvs = withPrefix "VIINI" `sepBy` newline
+separatedBy :: Parser a -> Parser b -> Parser [a]
+separatedBy parser separator = sepBy parser separator <|> pure []
 
 names :: Parser [String]
-names = withPrefix_ "VIINI" `sepBy` newline
+names = withPrefix "VIINI" `separatedBy` newline
 
-nameParser :: Parser String
-nameParser = withPrefix_ "VIINI"
+nameParser :: Parser WineProp
+nameParser = Name <$> withPrefix "VIINI"
 
-countryParser :: Parser String
-countryParser = withPrefix_ "Maa"
+countryParser :: Parser WineProp
+countryParser = Country <$> withPrefix "Maa"
 
-wineParser :: Parser [String]
-wineParser = parser `sepBy` newline
-  where
-    parser = nameParser <|> countryParser
+wineParser :: Parser WineProp
+wineParser = nameParser <|> countryParser

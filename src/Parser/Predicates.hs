@@ -1,12 +1,10 @@
 {-# LANGUAGE LambdaCase #-}
 
-module Parser.Predicates (KeyValue, newline, withPrefix, withPrefix_) where
+module Parser.Predicates (newline, withPrefix) where
 
 import Control.Applicative
 import Data.Char
 import Parser.Parser
-
-newtype KeyValue = KV (String, String) deriving (Show)
 
 satisfy :: (Char -> Bool) -> Parser Char
 satisfy predicate = Parser $ \case
@@ -42,10 +40,5 @@ spaces = many space
 newline :: Parser Char
 newline = char '\n' <|> (char '\r' *> char '\n')
 
-withPrefix :: String -> Parser KeyValue
-withPrefix prefix = KV <$> parseKv
-  where
-    parseKv = (,) <$> string prefix <* stripColon <*> anyString
-
-withPrefix_ :: String -> Parser String
-withPrefix_ prefix = string prefix <* stripColon *> anyString
+withPrefix :: String -> Parser String
+withPrefix prefix = string prefix <* stripColon *> anyString

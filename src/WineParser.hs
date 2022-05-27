@@ -19,12 +19,12 @@ wineCountry = "Maa: Yhdysvallat"
 
 parseName :: String -> Maybe WineProperty
 parseName input = do
-  let parser = P.withPrefix_ "VIINI"
+  let parser = P.withPrefix "VIINI"
   (name, unparsed) <- runParser parser input
   return $ Name name
 
 parseCountry :: String -> Maybe WineProperty
 parseCountry input = do
-  let parser = P.withPrefix_ "Maa"
+  let parser = P.withPrefix "Maa"
   (country, unparsed) <- runParser parser input
   return $ Country country
