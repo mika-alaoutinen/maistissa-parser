@@ -28,6 +28,9 @@ alphabet = satisfy isAlpha
 anyChar :: Parser Char
 anyChar = satisfy isAscii
 
+notLineBreak :: Parser Char
+notLineBreak = satisfy (/= '\n')
+
 digit :: Parser Char
 digit = satisfy isDigit
 
@@ -41,6 +44,9 @@ stripColon = spaces *> char ':' <* spaces
 anyString :: Parser String
 anyString = many anyChar
 
+untilLineBreak :: Parser String
+untilLineBreak = many notLineBreak
+
 spaces :: Parser String
 spaces = many space
 
@@ -51,4 +57,19 @@ withPrefix prefix = KV <$> parseKv
     parseKv = (,) <$> string prefix <* stripColon <*> anyString
 
 withPrefix_ :: String -> Parser String
-withPrefix_ prefix = string prefix <* stripColon *> anyString
+withPrefix_ prefix = string prefix <* stripColon *> untilLineBreak
+
+testStr = "VIINI: Apothic Dark 2015\nVIINI: Gato Negro"
+
+sepBy1 :: Parser a -> Parser b -> Parser [a]
+sepBy1 p sep = (:) <$> p <*> many (sep *> p)
+
+-- Exports
+sepBy :: Parser a -> Parser b -> Parser [a]
+sepBy parser separator = sepBy1 parser separator <|> pure []
+
+pKvs :: Parser [KeyValue]
+pKvs = withPrefix "VIINI" `sepBy` char ','
+
+names :: Parser [String]
+names = withPrefix_ "VIINI" `sepBy` char '\n'
