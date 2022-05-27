@@ -1,7 +1,9 @@
 module WineParser where
 
+import Control.Applicative
+import Parser.Combinators (separatedBy)
 import Parser.Parser
-import qualified Parser.Predicates as P
+import Parser.Predicates (newline, withPrefix)
 
 data WineProperty
   = Name String
@@ -12,19 +14,16 @@ data WineProperty
   | Url (Maybe String)
   deriving (Show, Eq)
 
--- Test properties
-wineName = "VIINI: Apothic Dark 2015"
+testStr = "VIINI: Apothic Dark 2015\nMaa: Espanja"
 
-wineCountry = "Maa: Yhdysvallat"
+nameParser :: Parser WineProperty
+nameParser = Name <$> withPrefix "VIINI"
 
-parseName :: String -> Maybe WineProperty
-parseName input = do
-  let parser = P.withPrefix "VIINI"
-  (name, unparsed) <- runParser parser input
-  return $ Name name
+countryParser :: Parser WineProperty
+countryParser = Country <$> withPrefix "Maa"
 
-parseCountry :: String -> Maybe WineProperty
-parseCountry input = do
-  let parser = P.withPrefix "Maa"
-  (country, unparsed) <- runParser parser input
-  return $ Country country
+wineParser :: Parser WineProperty
+wineParser = nameParser <|> countryParser
+
+parseWine :: Parser [WineProperty]
+parseWine = wineParser `separatedBy` newline

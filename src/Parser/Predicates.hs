@@ -3,7 +3,7 @@
 module Parser.Predicates (newline, withPrefix) where
 
 import Control.Applicative
-import Data.Char
+import Data.Char (isPrint, isSpace)
 import Parser.Parser
 
 satisfy :: (Char -> Bool) -> Parser Char
