@@ -1,6 +1,5 @@
 module WineParser where
 
-import Lines (trim)
 import Parser.Parser
 import qualified Parser.Predicates as P
 

@@ -26,7 +26,6 @@ source-repository head
 library
   exposed-modules:
       IO.FileReader
-      Lines
       Model.Wine
       Parser.Parser
       Parser.Predicates
