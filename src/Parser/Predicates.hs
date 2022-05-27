@@ -1,6 +1,6 @@
 {-# LANGUAGE LambdaCase #-}
 
-module Parser.Predicates where
+module Parser.Predicates (withPrefix, withPrefix_) where
 
 import Control.Applicative
 import Data.Char
@@ -34,6 +34,9 @@ digit = satisfy isDigit
 space :: Parser Char
 space = satisfy isSpace
 
+stripColon :: Parser Char
+stripColon = spaces *> char ':' <* spaces
+
 -- String predicates
 anyString :: Parser String
 anyString = many anyChar
@@ -41,7 +44,7 @@ anyString = many anyChar
 spaces :: Parser String
 spaces = many space
 
--- More complex predicates
+-- Exports
 withPrefix :: String -> Parser KeyValue
 withPrefix prefix = KV <$> parseKv
   where
@@ -49,7 +52,3 @@ withPrefix prefix = KV <$> parseKv
 
 withPrefix_ :: String -> Parser String
 withPrefix_ prefix = string prefix <* stripColon *> anyString
-
--- Helper functions
-stripColon :: Parser Char
-stripColon = spaces *> char ':' <* spaces
