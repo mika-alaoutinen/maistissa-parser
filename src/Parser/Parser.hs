@@ -1,7 +1,3 @@
--- Based on:
--- https://serokell.io/blog/parser-combinators-in-haskell
--- https://github.com/japiirainen/microparser/blob/main/src/MicroParser.hs
-
 module Parser.Parser (Parser (..)) where
 
 import Control.Applicative
