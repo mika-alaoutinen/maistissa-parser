@@ -62,7 +62,9 @@ withPrefix_ prefix = string prefix <* stripColon *> untilLineBreak
 testStr = "VIINI: Apothic Dark 2015\nVIINI: Gato Negro"
 
 sepBy1 :: Parser a -> Parser b -> Parser [a]
-sepBy1 p sep = (:) <$> p <*> many (sep *> p)
+sepBy1 parser separator = fmap (:) parser <*> parsers
+  where
+    parsers = many (separator *> parser)
 
 -- Exports
 sepBy :: Parser a -> Parser b -> Parser [a]
