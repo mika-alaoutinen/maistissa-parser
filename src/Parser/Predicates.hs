@@ -22,14 +22,8 @@ string :: String -> Parser String
 string = traverse char
 
 -- Char predicates
-alphabet :: Parser Char
-alphabet = satisfy isAlpha
-
 anyChar :: Parser Char
 anyChar = satisfy isPrint
-
-digit :: Parser Char
-digit = satisfy isDigit
 
 newline :: Parser Char
 newline = char '\n' <|> (char '\r' *> char '\n')
