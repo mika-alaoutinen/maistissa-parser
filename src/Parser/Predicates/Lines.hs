@@ -2,7 +2,7 @@ module Parser.Predicates.Lines (newline, withPrefix) where
 
 import Control.Applicative ((<|>))
 import Parser.Parser (Parser)
-import Parser.Predicates.Primitives (char)
+import Parser.Predicates.Chars (char)
 import Parser.Predicates.Strings (anyString, spaces, string)
 
 newline :: Parser Char

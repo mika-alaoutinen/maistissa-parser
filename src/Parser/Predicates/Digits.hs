@@ -1,17 +1,16 @@
 module Parser.Predicates.Digits where
 
 import Control.Applicative (Alternative (..))
-import Data.Char (isDigit)
-import Parser.Parser (Parser)
-import Parser.Predicates.Primitives (char, satisfy)
+import Data.Char (digitToInt, isDigit)
+import Parser.Parser (Parser, satisfy)
 
-digit :: Parser Char
-digit = satisfy isDigit
+digit :: Parser Int
+digit = digitToInt <$> satisfy isDigit
 
-digits :: Parser String
+digits :: Parser [Int]
 digits = many digit
 
-anyDecimal :: Parser String
-anyDecimal = digits <* decimalPoint <* digits
-  where
-    decimalPoint = char '.' <|> char ','
+-- anyDecimal :: Parser String
+-- anyDecimal = digits <* decimalPoint <* digits
+--   where
+--     decimalPoint = char '.' <|> char ','

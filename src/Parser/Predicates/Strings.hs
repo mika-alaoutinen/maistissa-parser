@@ -2,8 +2,7 @@ module Parser.Predicates.Strings where
 
 import Control.Applicative (Alternative (many))
 import Parser.Parser (Parser)
-import Parser.Predicates.Chars (anyChar, space)
-import Parser.Predicates.Primitives (char)
+import Parser.Predicates.Chars (anyChar, char, space)
 
 anyString :: Parser String
 anyString = many anyChar

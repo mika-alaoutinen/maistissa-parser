@@ -32,7 +32,6 @@ library
       Parser.Predicates.Chars
       Parser.Predicates.Digits
       Parser.Predicates.Lines
-      Parser.Predicates.Primitives
       Parser.Predicates.Strings
       WineParser
   other-modules:
