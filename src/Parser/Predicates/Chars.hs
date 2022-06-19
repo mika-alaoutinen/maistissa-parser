@@ -1,8 +1,8 @@
-module Parser.Chars where
+module Parser.Predicates.Chars where
 
 import Data.Char (isDigit, isPrint, isSpace)
 import Parser.Parser (Parser)
-import Parser.Predicates (satisfy)
+import Parser.Predicates.Primitives (satisfy)
 
 anyChar :: Parser Char
 anyChar = satisfy isPrint

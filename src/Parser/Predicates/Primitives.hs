@@ -1,6 +1,6 @@
 {-# LANGUAGE LambdaCase #-}
 
-module Parser.Predicates where
+module Parser.Predicates.Primitives where
 
 import Data.Char (isDigit, isPrint, isSpace)
 import Parser.Parser (Parser (Parser))

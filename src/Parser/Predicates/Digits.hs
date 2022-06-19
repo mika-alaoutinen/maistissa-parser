@@ -1,9 +1,9 @@
-module Parser.Digits where
+module Parser.Predicates.Digits where
 
 import Control.Applicative (Alternative (..))
 import Data.Char (isDigit)
 import Parser.Parser (Parser)
-import Parser.Predicates
+import Parser.Predicates.Primitives (char, satisfy)
 
 digit :: Parser Char
 digit = satisfy isDigit

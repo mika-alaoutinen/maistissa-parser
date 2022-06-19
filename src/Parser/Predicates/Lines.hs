@@ -1,9 +1,9 @@
-module Parser.Lines (newline, withPrefix) where
+module Parser.Predicates.Lines (newline, withPrefix) where
 
 import Control.Applicative ((<|>))
 import Parser.Parser (Parser)
-import Parser.Predicates (char)
-import Parser.Strings (anyString, spaces, string)
+import Parser.Predicates.Primitives (char)
+import Parser.Predicates.Strings (anyString, spaces, string)
 
 newline :: Parser Char
 newline = char '\n' <|> (char '\r' *> char '\n')

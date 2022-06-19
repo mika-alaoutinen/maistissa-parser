@@ -27,13 +27,13 @@ library
   exposed-modules:
       IO.FileReader
       Model.Wine
-      Parser.Chars
       Parser.Combinators
-      Parser.Digits
-      Parser.Lines
       Parser.Parser
-      Parser.Predicates
-      Parser.Strings
+      Parser.Predicates.Chars
+      Parser.Predicates.Digits
+      Parser.Predicates.Lines
+      Parser.Predicates.Primitives
+      Parser.Predicates.Strings
       WineParser
   other-modules:
       Paths_maistissa_parser
