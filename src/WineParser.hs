@@ -22,8 +22,8 @@ nameParser = Name <$> withPrefix "VIINI"
 countryParser :: Parser WineProperty
 countryParser = Country <$> withPrefix "Maa"
 
-wineParser :: Parser WineProperty
-wineParser = nameParser <|> countryParser
+winePropertyParser :: Parser WineProperty
+winePropertyParser = nameParser <|> countryParser
 
-parseWine :: Parser [WineProperty]
-parseWine = wineParser `separatedBy` newline
+parseWineProperties :: Parser [WineProperty]
+parseWineProperties = winePropertyParser `separatedBy` newline
