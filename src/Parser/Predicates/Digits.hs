@@ -1,4 +1,4 @@
-module Parser.Predicates.Digits where
+module Parser.Predicates.Digits (digit, digits, double, integer) where
 
 import Control.Applicative (Alternative (..))
 import Data.Char (digitToInt, isDigit)
@@ -11,17 +11,15 @@ digit = digitToInt <$> satisfy isDigit
 digits :: Parser [Int]
 digits = many digit
 
+double :: Parser Double
+double = toDouble <$> integer <*> fractional
+
 integer :: Parser Int
 integer = fromDigits <$> digits
 
-anyDecimal :: Parser [Int]
-anyDecimal = digits <* decimalPoint <* digits
-  where
-    decimalPoint = char '.' <|> char ','
-
 -- Helpers
-fractional :: Parser [Int]
-fractional = decimalPoint *> digits
+fractional :: Parser Int
+fractional = decimalPoint *> integer
   where
     decimalPoint = char '.' <|> char ','
 
@@ -29,3 +27,6 @@ fromDigits :: [Int] -> Int
 fromDigits = foldl addDigit 0
   where
     addDigit num d = 10 * num + d
+
+toDouble :: Int -> Int -> Double
+toDouble wholeNum decimal = fromIntegral wholeNum + (fromIntegral decimal / 100)
