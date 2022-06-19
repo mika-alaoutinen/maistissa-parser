@@ -26,10 +26,13 @@ source-repository head
 library
   exposed-modules:
       IO.FileReader
-      Lines
       Model.Wine
+      Parser.Combinators
       Parser.Parser
-      Parser.Predicates
+      Parser.Predicates.Chars
+      Parser.Predicates.Digits
+      Parser.Predicates.Lines
+      Parser.Predicates.Strings
       WineParser
   other-modules:
       Paths_maistissa_parser

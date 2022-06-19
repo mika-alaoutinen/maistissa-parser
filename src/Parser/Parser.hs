@@ -1,10 +1,8 @@
--- Based on:
--- https://serokell.io/blog/parser-combinators-in-haskell
--- https://github.com/japiirainen/microparser/blob/main/src/MicroParser.hs
+{-# LANGUAGE LambdaCase #-}
 
-module Parser.Parser (Parser (..)) where
+module Parser.Parser where
 
-import Control.Applicative
+import Control.Applicative (Alternative (empty, (<|>)))
 
 newtype Parser a = Parser {runParser :: String -> Maybe (a, String)}
 
@@ -34,3 +32,10 @@ instance Alternative Parser where
   Parser p1 <|> Parser p2 = Parser $ \input -> case p1 input of
     Just result -> Just result
     Nothing -> p2 input
+
+satisfy :: (Char -> Bool) -> Parser Char
+satisfy predicate = Parser $ \case
+  [] -> Nothing
+  x : xs
+    | predicate x -> Just (x, xs)
+    | otherwise -> Nothing
