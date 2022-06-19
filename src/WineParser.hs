@@ -2,8 +2,8 @@ module WineParser where
 
 import Control.Applicative
 import Parser.Combinators (separatedBy)
+import Parser.Lines (newline, withPrefix)
 import Parser.Parser
-import Parser.Predicates (newline, withPrefix)
 
 data WineProperty
   = Name String
