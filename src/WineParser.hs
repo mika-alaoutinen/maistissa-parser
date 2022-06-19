@@ -5,6 +5,7 @@ import Parser.Combinators (separatedBy)
 import Parser.Parser (Parser (..))
 import Parser.Predicates.Digits (double)
 import Parser.Predicates.Lines (newline, withPrefix)
+import Parser.Predicates.Strings (anyString)
 
 data WineProperty
   = Name String
@@ -18,12 +19,11 @@ data WineProperty
 testStr = "VIINI: Apothic Dark 2015\nMaa: Espanja\nHinta: 13.49"
 
 nameParser :: Parser WineProperty
-nameParser = Name <$> withPrefix "VIINI"
+nameParser = Name <$> (withPrefix "VIINI" *> anyString)
 
 countryParser :: Parser WineProperty
-countryParser = Country <$> withPrefix "Maa"
+countryParser = Country <$> (withPrefix "Maa" *> anyString)
 
--- Doesn't work
 priceParser :: Parser WineProperty
 priceParser = Price <$> (withPrefix "Hinta" *> double)
 
