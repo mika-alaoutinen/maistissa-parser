@@ -23,6 +23,7 @@ nameParser = Name <$> withPrefix "VIINI"
 countryParser :: Parser WineProperty
 countryParser = Country <$> withPrefix "Maa"
 
+-- Doesn't work
 priceParser :: Parser WineProperty
 priceParser = Price <$> (withPrefix "Hinta" *> double)
 
