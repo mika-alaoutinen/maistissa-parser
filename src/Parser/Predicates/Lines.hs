@@ -8,9 +8,12 @@ import Parser.Predicates.Strings (spaces, string)
 newline :: Parser Char
 newline = char '\n' <|> (char '\r' *> char '\n')
 
-withPrefix :: String -> Parser String
-withPrefix prefix = string prefix <* stripColon
+withPrefix :: String -> Parser a -> Parser a
+withPrefix prefix predicate = withPrefix' prefix *> predicate
 
 -- Helpers
 stripColon :: Parser Char
 stripColon = spaces *> char ':' <* spaces
+
+withPrefix' :: String -> Parser String
+withPrefix' prefix = string prefix <* stripColon

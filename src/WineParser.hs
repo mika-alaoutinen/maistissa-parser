@@ -19,13 +19,13 @@ data WineProperty
 testStr = "VIINI: Apothic Dark 2015\nMaa: Espanja\nHinta: 13.49"
 
 nameParser :: Parser WineProperty
-nameParser = Name <$> (withPrefix "VIINI" *> anyString)
+nameParser = Name <$> withPrefix "VIINI" anyString
 
 countryParser :: Parser WineProperty
-countryParser = Country <$> (withPrefix "Maa" *> anyString)
+countryParser = Country <$> withPrefix "Maa" anyString
 
 priceParser :: Parser WineProperty
-priceParser = Price <$> (withPrefix "Hinta" *> double)
+priceParser = Price <$> withPrefix "Hinta" double
 
 winePropertyParser :: Parser WineProperty
 winePropertyParser = nameParser <|> countryParser <|> priceParser
