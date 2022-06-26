@@ -1,4 +1,4 @@
-module Parser.Predicates.Lines (parseDouble, parseString, parseStrings) where
+module Parser.Lines (parseDouble, parseString, parseStrings) where
 
 import Data.List.Split (splitOn)
 import Parser.Parser (Parser)

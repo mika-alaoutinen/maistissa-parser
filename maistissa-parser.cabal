@@ -28,10 +28,10 @@ library
       IO.FileReader
       Model.Wine
       Parser.Combinators
+      Parser.Lines
       Parser.Parser
       Parser.Predicates.Chars
       Parser.Predicates.Digits
-      Parser.Predicates.Lines
       Parser.Predicates.Strings
       WineParser
   other-modules:
