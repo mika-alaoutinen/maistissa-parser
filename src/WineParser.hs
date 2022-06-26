@@ -26,23 +26,19 @@ testStr =
 
 -- Parse specific wine properties
 nameParser :: Parser WineProperty
-nameParser = Name <$> withPrefix "VIINI" anyString
+nameParser = Name <$> parseString "VIINI"
 
 countryParser :: Parser WineProperty
-countryParser = Country <$> withPrefix "Maa" anyString
+countryParser = Country <$> parseString "Maa"
 
 priceParser :: Parser WineProperty
 priceParser = Price <$> withPrefix "Hinta" double
 
 descriptionParser :: Parser WineProperty
-descriptionParser = Description <$> withPrefix "Kuvaus" descriptions
-  where
-    descriptions = commaSeparated <$> anyString
+descriptionParser = Description <$> parseStrings "Kuvaus"
 
 foodPairingsParser :: Parser WineProperty
-foodPairingsParser = FoodPairings <$> withPrefix "SopiiNautittavaksi" foodPairings
-  where
-    foodPairings = commaSeparated <$> anyString
+foodPairingsParser = FoodPairings <$> parseStrings "SopiiNautittavaksi"
 
 -- Parse wine properties
 winePropertyParser :: Parser WineProperty
@@ -54,3 +50,9 @@ parseWineProperties = winePropertyParser `separatedBy` newline
 -- Helpers
 commaSeparated :: String -> [String]
 commaSeparated = splitOn ", "
+
+parseString :: String -> Parser String
+parseString prefix = withPrefix prefix anyString
+
+parseStrings :: String -> Parser [String]
+parseStrings prefix = withPrefix prefix $ commaSeparated <$> anyString
