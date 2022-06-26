@@ -17,7 +17,12 @@ data WineProperty
   | Url (Maybe String)
   deriving (Show, Eq)
 
-testStr = "VIINI: Apothic Dark 2015\nMaa: Espanja\nHinta: 13.49\nKuvaus: Pehmeä ja hedelmäinen, täyteläinen"
+testStr =
+  "VIINI: Apothic Dark 2015\n\
+  \Maa: Espanja\n\
+  \Hinta: 13.49\n\
+  \Kuvaus: Pehmeä ja hedelmäinen, täyteläinen\n\
+  \SopiiNautittavaksi: seurustelujuomana, pikkusuolaiset, pasta ja pizza, grilliruoka"
 
 -- Parse specific wine properties
 nameParser :: Parser WineProperty
@@ -32,14 +37,20 @@ priceParser = Price <$> withPrefix "Hinta" double
 descriptionParser :: Parser WineProperty
 descriptionParser = Description <$> withPrefix "Kuvaus" descriptions
   where
-    descriptions = splitOn ", " <$> anyString
+    descriptions = commaSeparated <$> anyString
+
+foodPairingsParser :: Parser WineProperty
+foodPairingsParser = FoodPairings <$> withPrefix "SopiiNautittavaksi" foodPairings
+  where
+    foodPairings = commaSeparated <$> anyString
 
 -- Parse wine properties
 winePropertyParser :: Parser WineProperty
-winePropertyParser = nameParser <|> countryParser <|> priceParser <|> descriptionParser
+winePropertyParser = nameParser <|> countryParser <|> priceParser <|> descriptionParser <|> foodPairingsParser
 
 parseWineProperties :: Parser [WineProperty]
 parseWineProperties = winePropertyParser `separatedBy` newline
 
+-- Helpers
 commaSeparated :: String -> [String]
 commaSeparated = splitOn ", "
