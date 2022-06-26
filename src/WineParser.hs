@@ -1,12 +1,9 @@
 module WineParser where
 
 import Control.Applicative (Alternative ((<|>)))
-import Data.List.Split (splitOn)
 import Parser.Combinators (separatedBy)
 import Parser.Parser (Parser (..))
-import Parser.Predicates.Digits (double)
-import Parser.Predicates.Lines (newline, withPrefix)
-import Parser.Predicates.Strings (anyString)
+import Parser.Predicates.Lines (newline, parseDouble, parseString, parseStrings)
 
 data WineProperty
   = Name String
@@ -32,7 +29,7 @@ countryParser :: Parser WineProperty
 countryParser = Country <$> parseString "Maa"
 
 priceParser :: Parser WineProperty
-priceParser = Price <$> withPrefix "Hinta" double
+priceParser = Price <$> parseDouble "Hinta"
 
 descriptionParser :: Parser WineProperty
 descriptionParser = Description <$> parseStrings "Kuvaus"
@@ -46,13 +43,3 @@ winePropertyParser = nameParser <|> countryParser <|> priceParser <|> descriptio
 
 parseWineProperties :: Parser [WineProperty]
 parseWineProperties = winePropertyParser `separatedBy` newline
-
--- Helpers
-commaSeparated :: String -> [String]
-commaSeparated = splitOn ", "
-
-parseString :: String -> Parser String
-parseString prefix = withPrefix prefix anyString
-
-parseStrings :: String -> Parser [String]
-parseStrings prefix = withPrefix prefix $ commaSeparated <$> anyString
