@@ -1,14 +1,10 @@
-module Parser.Predicates.Lines (newline, parseDouble, parseString, parseStrings) where
+module Parser.Predicates.Lines (parseDouble, parseString, parseStrings) where
 
-import Control.Applicative ((<|>))
 import Data.List.Split (splitOn)
 import Parser.Parser (Parser)
 import Parser.Predicates.Chars (char)
 import Parser.Predicates.Digits (double)
 import Parser.Predicates.Strings (anyString, spaces, string)
-
-newline :: Parser Char
-newline = char '\n' <|> (char '\r' *> char '\n')
 
 parseDouble :: String -> Parser Double
 parseDouble prefix = withPrefix prefix double
