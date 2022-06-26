@@ -40,6 +40,7 @@ library
       src
   build-depends:
       base >=4.7 && <5
+    , split
   default-language: Haskell2010
 
 executable maistissa-parser-exe
@@ -52,6 +53,7 @@ executable maistissa-parser-exe
   build-depends:
       base >=4.7 && <5
     , maistissa-parser
+    , split
   default-language: Haskell2010
 
 test-suite maistissa-parser-test
@@ -65,4 +67,5 @@ test-suite maistissa-parser-test
   build-depends:
       base >=4.7 && <5
     , maistissa-parser
+    , split
   default-language: Haskell2010

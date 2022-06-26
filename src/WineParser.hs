@@ -1,6 +1,7 @@
 module WineParser where
 
 import Control.Applicative (Alternative ((<|>)))
+import Data.List.Split (splitOn)
 import Parser.Combinators (separatedBy)
 import Parser.Parser (Parser (..))
 import Parser.Predicates.Digits (double)
@@ -16,8 +17,9 @@ data WineProperty
   | Url (Maybe String)
   deriving (Show, Eq)
 
-testStr = "VIINI: Apothic Dark 2015\nMaa: Espanja\nHinta: 13.49"
+testStr = "VIINI: Apothic Dark 2015\nMaa: Espanja\nHinta: 13.49\nKuvaus: Pehmeä ja hedelmäinen, täyteläinen"
 
+-- Parse specific wine properties
 nameParser :: Parser WineProperty
 nameParser = Name <$> withPrefix "VIINI" anyString
 
@@ -27,8 +29,17 @@ countryParser = Country <$> withPrefix "Maa" anyString
 priceParser :: Parser WineProperty
 priceParser = Price <$> withPrefix "Hinta" double
 
+descriptionParser :: Parser WineProperty
+descriptionParser = Description <$> withPrefix "Kuvaus" descriptions
+  where
+    descriptions = splitOn ", " <$> anyString
+
+-- Parse wine properties
 winePropertyParser :: Parser WineProperty
-winePropertyParser = nameParser <|> countryParser <|> priceParser
+winePropertyParser = nameParser <|> countryParser <|> priceParser <|> descriptionParser
 
 parseWineProperties :: Parser [WineProperty]
 parseWineProperties = winePropertyParser `separatedBy` newline
+
+commaSeparated :: String -> [String]
+commaSeparated = splitOn ", "
