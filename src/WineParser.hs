@@ -1,62 +1,22 @@
 module WineParser where
 
 import Control.Applicative (Alternative ((<|>)))
+import Data.Maybe (fromMaybe)
+import Debug.Trace
 import Model.Wine (Wine (..))
 import Parser.Combinators (separatedBy)
 import Parser.Lines (parseDouble, parseString, parseStrings)
 import Parser.Parser (Parser (..))
 import Parser.Predicates.Chars (newline)
-import Debug.Trace
-import Data.Maybe (fromMaybe)
+import Parser.WinePropertyParser
 
-data WineProperty
-  = Name String
-  | Country String
-  | Price Double
-  | Description [String]
-  | FoodPairings [String]
-  | Url (Maybe String)
-  deriving (Show, Eq)
+parseWine1 :: String -> Maybe Wine
+parseWine1 input = do
+  (wineProperties, _) <- runParser winePropertiesParser input
+  wineFromProperties wineProperties
 
-testStr =
-  "VIINI: Apothic Dark 2015\n\
-  \Maa: Espanja\n\
-  \Hinta: 13.49\n\
-  \Kuvaus: Pehmeä ja hedelmäinen, täyteläinen\n\
-  \SopiiNautittavaksi: seurustelujuomana, pikkusuolaiset, pasta ja pizza, grilliruoka\n\
-  \url: https://alko.fi/123"
-
--- Parse specific wine properties
-nameParser :: Parser WineProperty
-nameParser = Name <$> parseString "VIINI"
-
-countryParser :: Parser WineProperty
-countryParser = Country <$> parseString "Maa"
-
-priceParser :: Parser WineProperty
-priceParser = Price <$> parseDouble "Hinta"
-
-descriptionParser :: Parser WineProperty
-descriptionParser = Description <$> parseStrings "Kuvaus"
-
-foodPairingsParser :: Parser WineProperty
-foodPairingsParser = FoodPairings <$> parseStrings "SopiiNautittavaksi"
-
-urlParser :: Parser WineProperty
-urlParser = Url . Just <$> parseString "url"
-
--- Parse wine properties
-winePropertyParser :: Parser WineProperty
-winePropertyParser =
-  nameParser
-    <|> countryParser
-    <|> priceParser
-    <|> descriptionParser
-    <|> foodPairingsParser
-    <|> urlParser
-
-winePropertiesParser :: Parser [WineProperty]
-winePropertiesParser = winePropertyParser `separatedBy` newline
+wineFromProperties :: [WineProperty] -> Maybe Wine
+wineFromProperties properties = Nothing
 
 -- Parsinta epäonnistuu, koska viinin nimen jälkeen unparsed1-merkkijonon alussa on rivinvaihto.
 -- Rivinvaihto täytyy joko poistaa tai keksiä jokin tapa parsia jokainen rivi `separatedBy` \n.
