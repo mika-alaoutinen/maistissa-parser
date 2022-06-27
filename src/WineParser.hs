@@ -1,46 +1,39 @@
-module WineParser where
+{-# LANGUAGE RecordWildCards #-}
 
-import Control.Applicative (Alternative ((<|>)))
-import Parser.Combinators (separatedBy)
-import Parser.Lines (parseDouble, parseString, parseStrings)
+module WineParser (parseWine) where
+
+import Model.Wine (Wine (..))
 import Parser.Parser (Parser (..))
-import Parser.Predicates.Chars (newline)
-
-data WineProperty
-  = Name String
-  | Country String
-  | Price Double
-  | Description [String]
-  | FoodPairings [String]
-  | Url (Maybe String)
-  deriving (Show, Eq)
+import Parser.WinePropertyParser (WineProperty (..), winePropertiesParser)
 
 testStr =
   "VIINI: Apothic Dark 2015\n\
   \Maa: Espanja\n\
   \Hinta: 13.49\n\
   \Kuvaus: Pehmeä ja hedelmäinen, täyteläinen\n\
-  \SopiiNautittavaksi: seurustelujuomana, pikkusuolaiset, pasta ja pizza, grilliruoka"
+  \SopiiNautittavaksi: seurustelujuomana, pikkusuolaiset, pasta ja pizza, grilliruoka\n\
+  \url: https://alko.fi/123"
 
--- Parse specific wine properties
-nameParser :: Parser WineProperty
-nameParser = Name <$> parseString "VIINI"
+parseWine :: String -> Maybe Wine
+parseWine input = do
+  (wineProperties, _) <- runParser winePropertiesParser input
+  mkWine wineProperties
 
-countryParser :: Parser WineProperty
-countryParser = Country <$> parseString "Maa"
-
-priceParser :: Parser WineProperty
-priceParser = Price <$> parseDouble "Hinta"
-
-descriptionParser :: Parser WineProperty
-descriptionParser = Description <$> parseStrings "Kuvaus"
-
-foodPairingsParser :: Parser WineProperty
-foodPairingsParser = FoodPairings <$> parseStrings "SopiiNautittavaksi"
-
--- Parse wine properties
-winePropertyParser :: Parser WineProperty
-winePropertyParser = nameParser <|> countryParser <|> priceParser <|> descriptionParser <|> foodPairingsParser
-
-parseWineProperties :: Parser [WineProperty]
-parseWineProperties = winePropertyParser `separatedBy` newline
+-- Helpers
+mkWine :: [WineProperty] -> Maybe Wine
+mkWine
+  [ Name name,
+    Country country,
+    Price price,
+    Description description,
+    FoodPairings foodPairings,
+    Url url
+    ] = Just Wine {..}
+mkWine
+  [ Name name,
+    Country country,
+    Price price,
+    Description description,
+    FoodPairings foodPairings
+    ] = Just Wine {url = Nothing, ..}
+mkWine _ = Nothing

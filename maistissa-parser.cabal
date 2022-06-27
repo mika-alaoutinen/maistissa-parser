@@ -33,6 +33,7 @@ library
       Parser.Predicates.Chars
       Parser.Predicates.Digits
       Parser.Predicates.Strings
+      Parser.WinePropertyParser
       WineParser
   other-modules:
       Paths_maistissa_parser
