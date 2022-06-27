@@ -1,50 +1,32 @@
-module WineParser where
+{-# LANGUAGE RecordWildCards #-}
 
-import Control.Applicative (Alternative ((<|>)))
-import Data.Maybe (fromMaybe)
-import Debug.Trace
+module WineParser (parseWine) where
+
 import Model.Wine (Wine (..))
-import Parser.Combinators (separatedBy)
-import Parser.Lines (parseDouble, parseString, parseStrings)
 import Parser.Parser (Parser (..))
-import Parser.Predicates.Chars (newline)
-import Parser.WinePropertyParser
+import Parser.WinePropertyParser (WineProperty (..), winePropertiesParser)
 
-parseWine1 :: String -> Maybe Wine
-parseWine1 input = do
-  (wineProperties, _) <- runParser winePropertiesParser input
-  wineFromProperties wineProperties
+testStr =
+  "VIINI: Apothic Dark 2015\n\
+  \Maa: Espanja\n\
+  \Hinta: 13.49\n\
+  \Kuvaus: Pehmeä ja hedelmäinen, täyteläinen\n\
+  \SopiiNautittavaksi: seurustelujuomana, pikkusuolaiset, pasta ja pizza, grilliruoka\n\
+  \url: https://alko.fi/123"
 
-wineFromProperties :: [WineProperty] -> Maybe Wine
-wineFromProperties properties = Nothing
-
--- Parsinta epäonnistuu, koska viinin nimen jälkeen unparsed1-merkkijonon alussa on rivinvaihto.
--- Rivinvaihto täytyy joko poistaa tai keksiä jokin tapa parsia jokainen rivi `separatedBy` \n.
 parseWine :: String -> Maybe Wine
 parseWine input = do
-  (Name name, unparsed1) <- runParser winePropertyParser (dropLineBreak input)
-  (Country country, unparsed2) <- runParser winePropertyParser (dropLineBreak unparsed1)
-  (Price price, unparsed3) <- runParser winePropertyParser (dropLineBreak unparsed2)
-  (Description description, unparsed4) <- runParser winePropertyParser (dropLineBreak unparsed3)
-  (FoodPairings foodPairings, unparsed5) <- runParser winePropertyParser (dropLineBreak unparsed4)
-  (Url url, unparsed6) <- runParser winePropertyParser (dropLineBreak unparsed5)
+  (wineProperties, _) <- runParser winePropertiesParser input
+  mkWine wineProperties
 
-  trace ("Name: " ++ name) Just name
-  trace ("Country: " ++ country) Just country
-  trace ("Price: " ++ show price) Just price
-  trace ("Description: " ++ show (length description)) Just description
-  trace ("Food Pairings: " ++ show (length foodPairings)) Just foodPairings
-  trace ("url: " ++ fromMaybe "no url" url) url
-
-  Just
-    Wine
-      { name = name,
-        country = country,
-        price = price,
-        description = description,
-        foodPairings = foodPairings,
-        url = url
-      }
-
-dropLineBreak :: String -> String
-dropLineBreak = dropWhile (== '\n')
+-- Helpers
+mkWine :: [WineProperty] -> Maybe Wine
+mkWine
+  [ Name name,
+    Country country,
+    Price price,
+    Description description,
+    FoodPairings foodPairings,
+    Url url
+    ] = Just Wine {..}
+mkWine _ = Nothing
