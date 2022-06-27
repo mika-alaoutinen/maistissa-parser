@@ -29,4 +29,11 @@ mkWine
     FoodPairings foodPairings,
     Url url
     ] = Just Wine {..}
+mkWine
+  [ Name name,
+    Country country,
+    Price price,
+    Description description,
+    FoodPairings foodPairings
+    ] = Just Wine {url = Nothing, ..}
 mkWine _ = Nothing
