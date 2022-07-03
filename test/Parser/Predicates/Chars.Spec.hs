@@ -1,3 +1,5 @@
+module Parser.Predicates.Chars.Spec where
+
 import Parser.Parser (Parser (runParser))
 import Parser.Predicates.Chars
 import Test.QuickCheck

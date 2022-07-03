@@ -1,3 +1,5 @@
+module Parser.Lines.Spec where
+
 import Parser.Lines (parseString)
 import Parser.Parser (Parser (runParser))
 import Test.QuickCheck
