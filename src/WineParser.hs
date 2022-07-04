@@ -4,7 +4,7 @@ module WineParser (parseWine) where
 
 import Model.Wine (Wine (..))
 import Parser.Parser (Parser (..))
-import Parser.WinePropertyParser (WineProperty (..), winePropertiesParser)
+import Parser.WineProperties (WineProperty (..), winePropertiesParser)
 
 testStr =
   "VIINI: Apothic Dark 2015\n\
