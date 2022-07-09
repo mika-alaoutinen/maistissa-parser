@@ -13,13 +13,13 @@ jobs:
       fail-fast: true
       matrix:
         ghc-version:
-          - 8.10
-          - 9.0
-          - latest
+          - "8.10"
+          - "9.0"
+          - "latest"
     steps:
       - uses: actions/checkout@v3
       - uses: haskell/actions/setup@v2
         with:
           ghc-version: ${{ matrix.ghc-version }}
           enable-stack: true
-      - run: stack test
+      - run: stack test --verbosity warn
