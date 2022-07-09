@@ -1,7 +1,7 @@
 module Parser.LinesSpec (spec) where
 
 import Data.List (intercalate)
-import Parser.Lines (parseDouble, parseString, parseStrings)
+import Parser.Lines
 import Parser.Parser (Parser (runParser))
 import Test.Hspec
 import Test.Hspec.QuickCheck
@@ -15,12 +15,12 @@ input = inputValue "123.45 abc"
 spec :: Spec
 spec = do
   describe "Parses a line starting with given prefix" $ do
-    it "should parse a double with given prefix" $ do
-      runParser (parseDouble prefix) input `shouldBe` Just (123.45, " abc")
-    it "should fail if input is not a decimal number" $ do
-      runParser (parseDouble prefix) (inputValue "123") `shouldBe` Nothing
+    it "should parse a decimal number with given prefix" $ do
+      runParser (parseNumber prefix) input `shouldBe` Just (123.45, " abc")
+    it "should parse an integer with given prefix" $ do
+      runParser (parseNumber prefix) (inputValue "123 abc") `shouldBe` Just (123.0, " abc")
     it "should fail on empty input" $ do
-      runParser (parseDouble prefix) "" `shouldBe` Nothing
+      runParser (parseNumber prefix) "" `shouldBe` Nothing
 
   describe "Parses a string starting with given prefix" $ do
     it "should parse a string with given prefix" $ do
@@ -39,16 +39,16 @@ spec = do
       runParser (parseStrings prefix) "" `shouldBe` Nothing
 
   describe "QuickCheck test cases" $ do
-    prop "parses a double" prop_parseDouble
+    prop "parses a double" prop_parseNumber
     prop "parses a string" prop_parseString
     prop "parses a comma separated string" prop_parseStrings
 
-prop_parseDouble :: String -> Property
-prop_parseDouble prefix = forAll alphabetString $ \str -> case parse (input str) of
+prop_parseNumber :: String -> Property
+prop_parseNumber prefix = forAll alphabetString $ \str -> case parse (input str) of
   Nothing -> True
   Just (parsed, _) -> parsed == read str
   where
-    parse = runParser $ parseDouble prefix
+    parse = runParser $ parseNumber prefix
     input value = prefix ++ ": " ++ value
 
 prop_parseString :: String -> Property

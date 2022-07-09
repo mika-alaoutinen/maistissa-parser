@@ -7,7 +7,7 @@ where
 
 import Control.Applicative ((<|>))
 import Parser.Combinators (separatedBy)
-import Parser.Lines (parseDouble, parseString, parseStrings)
+import Parser.Lines (parseNumber, parseString, parseStrings)
 import Parser.Parser (Parser (..))
 import Parser.Predicates.Chars (newline)
 
@@ -35,7 +35,7 @@ country :: Parser WineProperty
 country = Country <$> parseString "Maa"
 
 price :: Parser WineProperty
-price = Price <$> parseDouble "Hinta"
+price = Price <$> parseNumber "Hinta"
 
 description :: Parser WineProperty
 description = Description <$> parseStrings "Kuvaus"
