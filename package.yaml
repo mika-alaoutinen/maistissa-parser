@@ -39,5 +39,7 @@ tests:
       - -rtsopts
       - -with-rtsopts=-N
     dependencies:
+      - hspec
+      - hspec-discover
       - maistissa-parser
       - QuickCheck
