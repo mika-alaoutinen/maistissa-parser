@@ -32,14 +32,7 @@ executables:
 
 tests:
   maistissa-parser-test:
-    main: Spec.hs
-    source-dirs: test
-    ghc-options:
-      - -threaded
-      - -rtsopts
-      - -with-rtsopts=-N
+    defaults: hspec/hspec@main
     dependencies:
-      - hspec
-      - hspec-discover
       - maistissa-parser
       - QuickCheck

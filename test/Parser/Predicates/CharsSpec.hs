@@ -1,15 +1,18 @@
-module Parser.Predicates.Chars.Spec where
+module Parser.Predicates.CharsSpec where
 
 import Parser.Parser (Parser (runParser))
 import Parser.Predicates.Chars
+import Test.Hspec (Spec, describe)
+import Test.Hspec.QuickCheck (prop)
 import Test.QuickCheck
 
-runTests :: IO ()
-runTests = do
-  quickCheck prop_anyChar
-  quickCheck prop_char
-  quickCheck prop_newline
-  quickCheck prop_space
+spec :: Spec
+spec = do
+  describe "Parses a single char" $ do
+    prop "any char" prop_anyChar
+    prop "a char matching given argument" prop_char
+    prop "newline" prop_newline
+    prop "space" prop_space
 
 prop_anyChar :: Property
 prop_anyChar = forAll alphabetString $ \input -> case parse input of
