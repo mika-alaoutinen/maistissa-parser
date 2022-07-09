@@ -9,7 +9,7 @@ digit :: Parser Int
 digit = digitToInt <$> satisfy isDigit
 
 digits :: Parser [Int]
-digits = many digit
+digits = some digit
 
 double :: Parser Double
 double = toDouble <$> integer <*> fractional
