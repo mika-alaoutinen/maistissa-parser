@@ -50,7 +50,7 @@ executable maistissa-parser-exe
       Paths_maistissa_parser
   hs-source-dirs:
       app
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N -Wall -Werror
   build-depends:
       base >=4.7 && <5
     , maistissa-parser

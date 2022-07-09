@@ -11,8 +11,9 @@ The application consists of three modules:
 ## References
 The code for the parser and parser combinator is based on the following articles:
 
-<ul>
-  <li>https://serokell.io/blog/parser-combinators-in-haskell</li>
-  <li>https://github.com/japiirainen/microparser</li>
-  <li>https://abhinavsarkar.net/posts/json-parsing-from-scratch-in-haskell</li>
-</ul>
+- https://abhinavsarkar.net/posts/json-parsing-from-scratch-in-haskell.
+- https://serokell.io/blog/parser-combinators-in-haskell
+- https://github.com/japiirainen/microparser
+
+Haskell tutorials
+- Writing unit tests with [HSpec](https://hspec.github.io). Includes a nice [example project](https://github.com/hspec/hspec-example).
