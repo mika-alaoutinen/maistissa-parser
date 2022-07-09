@@ -1,4 +1,4 @@
-module Parser.Predicates.StringsSpec where
+module Parser.Predicates.StringsSpec (spec) where
 
 import Parser.Parser (Parser (runParser))
 import Parser.Predicates.Strings

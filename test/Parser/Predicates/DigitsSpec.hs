@@ -1,4 +1,4 @@
-module Parser.Predicates.DigitsSpec where
+module Parser.Predicates.DigitsSpec (spec) where
 
 import Parser.Parser (Parser (runParser))
 import Parser.Predicates.Digits
