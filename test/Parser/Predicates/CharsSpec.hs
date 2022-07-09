@@ -1,10 +1,11 @@
-module Parser.Predicates.CharsSpec where
+module Parser.Predicates.CharsSpec (spec) where
 
 import Parser.Parser (Parser (runParser))
 import Parser.Predicates.Chars
 import Test.Hspec (Spec, describe)
 import Test.Hspec.QuickCheck (prop)
 import Test.QuickCheck
+import TestUtils (alphabetString)
 
 spec :: Spec
 spec = do
@@ -46,8 +47,5 @@ prop_space = forAll input $ \i -> case parse i of
     input = elements ["abc", " abc"]
 
 -- Helpers
-alphabetString :: Gen String
-alphabetString = listOf1 (elements ['a' .. 'z'])
-
 hasLinebreaks :: String -> Bool
 hasLinebreaks = any (\c -> c == '\n' || c == '\r')

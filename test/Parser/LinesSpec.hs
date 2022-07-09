@@ -1,10 +1,11 @@
-module Parser.LinesSpec where
+module Parser.LinesSpec (spec) where
 
 import Parser.Lines (parseString)
 import Parser.Parser (Parser (runParser))
 import Test.Hspec (Spec, describe)
 import Test.Hspec.QuickCheck (prop)
 import Test.QuickCheck
+import TestUtils (alphabetString)
 
 spec :: Spec
 spec = do
@@ -18,7 +19,3 @@ prop_parseString prefix = forAll alphabetString $ \str -> case parse (input str)
   where
     parse = runParser $ parseString prefix
     input value = prefix ++ ": " ++ value
-
--- Helpers
-alphabetString :: Gen String
-alphabetString = listOf1 (elements ['a' .. 'z'])
