@@ -17,10 +17,14 @@ jobs:
           - "9.0"
           - "latest"
     steps:
-      - uses: actions/checkout@v3
-      - uses: haskell/actions/setup@v2
+      - name: Checkout source code
+        uses: actions/checkout@v3
+      - name: Setup Haskell
+        uses: haskell/actions/setup@v2
         with:
           ghc-version: ${{ matrix.ghc-version }}
           enable-stack: true
-      - run: stack build --test --bench --no-run-tests --no-run-benchmarks
-      - run: stack test --verbosity warn
+      - name: Build code
+        run: stack build --test --bench --no-run-tests --no-run-benchmarks --verbosity warn
+      - name: Run tests
+        run: stack test --verbosity warn
