@@ -1,4 +1,4 @@
-module Parser.WinePropertyParser
+module Parser.WineProperties
   ( WineProperty (..),
     winePropertyParser,
     winePropertiesParser,
