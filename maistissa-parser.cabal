@@ -64,6 +64,7 @@ test-suite maistissa-parser-test
       Parser.LinesSpec
       Parser.Predicates.CharsSpec
       Parser.Predicates.DigitsSpec
+      Parser.Predicates.StringsSpec
       TestUtils
       Paths_maistissa_parser
   hs-source-dirs:
