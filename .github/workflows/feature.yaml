@@ -1,0 +1,30 @@
+name: Feature branch workflow
+
+on:
+  push:
+    branches-ignore:
+      - master
+
+jobs:
+  build-and-test:
+    name: Build code and run tests.
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        ghc-version:
+          - "8.10"
+          - "9.0"
+          - "latest"
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+      - name: Setup Haskell
+        uses: haskell/actions/setup@v2
+        with:
+          ghc-version: ${{ matrix.ghc-version }}
+          enable-stack: true
+      - name: Build code
+        run: stack build --test --bench --no-run-tests --no-run-benchmarks --verbosity warn
+      - name: Run tests
+        run: stack test --verbosity warn
