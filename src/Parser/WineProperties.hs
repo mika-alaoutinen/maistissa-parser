@@ -20,14 +20,6 @@ data WineProperty
   | Url (Maybe String)
   deriving (Show, Eq)
 
-testStr =
-  "VIINI: Apothic Dark 2015\n\
-  \Maa: Espanja\n\
-  \Hinta: 13.49\n\
-  \Kuvaus: Pehmeä ja hedelmäinen, täyteläinen\n\
-  \SopiiNautittavaksi: seurustelujuomana, pikkusuolaiset, pasta ja pizza, grilliruoka\n\
-  \url: https://alko.fi/123"
-
 name :: Parser WineProperty
 name = Name <$> parseString "VIINI"
 

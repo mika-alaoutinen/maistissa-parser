@@ -1,7 +1,7 @@
 module Parser.WinePropertiesSpec (spec) where
 
 import Data.Maybe (fromMaybe)
-import Parser.Parser (Parser (runParser))
+import Parser.Parser (Parser (..))
 import Parser.WineProperties
 import Test.Hspec
 import Test.Hspec.QuickCheck
