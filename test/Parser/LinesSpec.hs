@@ -16,27 +16,33 @@ spec :: Spec
 spec = do
   describe "Parses a number starting with given prefix" $ do
     it "should parse a decimal number with given prefix" $ do
-      runParser (parseNumber prefix) input `shouldBe` Right (123.45, " abc")
+      parseNum input `shouldBe` Right (123.45, " abc")
     it "should parse an integer with given prefix and convert it to double" $ do
-      runParser (parseNumber prefix) (inputValue "123 abc") `shouldBe` Right (123.0, " abc")
+      parseNum (inputValue "123 abc") `shouldBe` Right (123.0, " abc")
     it "should fail on empty input" $ do
-      runParser (parseNumber prefix) "" `shouldBe` Left [EndOfInput]
+      parseNum "" `shouldBe` Left [EndOfInput]
+    it "should fail when no value is given with prefix" $ do
+      parseNum (inputValue "") `shouldBe` Left [EndOfInput]
 
   describe "Parses a string starting with given prefix" $ do
     it "should parse a string with given prefix" $ do
-      runParser (parseString prefix) input `shouldBe` Right ("123.45 abc", "")
+      parseStr input `shouldBe` Right ("123.45 abc", "")
     it "should parse until line breek" $ do
-      runParser (parseString prefix) (input ++ "\ndef") `shouldBe` Right ("123.45 abc", "\ndef")
+      parseStr (input ++ "\ndef") `shouldBe` Right ("123.45 abc", "\ndef")
     it "should fail on empty input" $ do
-      runParser (parseString prefix) "" `shouldBe` Left [EndOfInput]
+      parseStr "" `shouldBe` Left [EndOfInput]
+    it "should fail when no value is given with prefix" $ do
+      parseStr (inputValue "") `shouldBe` Left [EndOfInput]
 
   describe "Parses a string of comma separated values into list" $ do
     it "should parse aa, bb, cc" $ do
-      runParser (parseStrings prefix) (inputValue "aa, bb, cc") `shouldBe` Right (["aa", "bb", "cc"], "")
+      parseStrs (inputValue "aa, bb, cc") `shouldBe` Right (["aa", "bb", "cc"], "")
     it "should return singleton list on input without commas" $ do
-      runParser (parseStrings prefix) input `shouldBe` Right (["123.45 abc"], "")
+      parseStrs input `shouldBe` Right (["123.45 abc"], "")
     it "should fail on empty input" $ do
-      runParser (parseStrings prefix) "" `shouldBe` Left [EndOfInput]
+      parseStrs "" `shouldBe` Left [EndOfInput]
+    it "should fail when no value is given with prefix" $ do
+      parseStrs (inputValue "") `shouldBe` Left [EndOfInput]
 
   describe "QuickCheck test cases" $ do
     prop "parses a double" prop_parseNumber
@@ -70,3 +76,12 @@ prop_parseStrings prefix = forAll alphabetString $ \str -> case parse (input str
 -- Helpers
 inputValue :: String -> String
 inputValue value = prefix ++ ": " ++ value
+
+parseNum :: String -> Either [Error] (Double, String)
+parseNum = runParser (parseNumber prefix)
+
+parseStr :: String -> Either [Error] (String, String)
+parseStr = runParser (parseString prefix)
+
+parseStrs :: String -> Either [Error] ([String], String)
+parseStrs = runParser (parseStrings prefix)
