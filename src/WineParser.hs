@@ -3,16 +3,16 @@
 module WineParser (parseWine) where
 
 import Model.Wine (Wine (..))
-import Parser.Parser (Parser (..))
+import Parser.Parser (Error (..), Parser (..))
 import Parser.WineProperties (WineProperty (..), winePropertiesParser)
 
-parseWine :: String -> Maybe Wine
+parseWine :: String -> Either [Error] Wine
 parseWine input = do
   (wineProperties, _) <- runParser winePropertiesParser input
   mkWine wineProperties
 
 -- Helpers
-mkWine :: [WineProperty] -> Maybe Wine
+mkWine :: [WineProperty] -> Either [Error] Wine
 mkWine
   [ Name name,
     Country country,
@@ -20,12 +20,12 @@ mkWine
     Description description,
     FoodPairings foodPairings,
     Url url
-    ] = Just Wine {..}
+    ] = Right Wine {..}
 mkWine
   [ Name name,
     Country country,
     Price price,
     Description description,
     FoodPairings foodPairings
-    ] = Just Wine {url = Nothing, ..}
-mkWine _ = Nothing
+    ] = Right Wine {url = Nothing, ..}
+mkWine _ = Left [Unexpected "placeholder"]
