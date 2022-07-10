@@ -14,10 +14,10 @@ input = inputValue "123.45 abc"
 
 spec :: Spec
 spec = do
-  describe "Parses a line starting with given prefix" $ do
+  describe "Parses a number starting with given prefix" $ do
     it "should parse a decimal number with given prefix" $ do
       runParser (parseNumber prefix) input `shouldBe` Just (123.45, " abc")
-    it "should parse an integer with given prefix" $ do
+    it "should parse an integer with given prefix and convert it to double" $ do
       runParser (parseNumber prefix) (inputValue "123 abc") `shouldBe` Just (123.0, " abc")
     it "should fail on empty input" $ do
       runParser (parseNumber prefix) "" `shouldBe` Nothing
