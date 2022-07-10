@@ -6,9 +6,9 @@ import Control.Applicative (Alternative (empty, (<|>)))
 import Data.List (nub)
 
 data Error
-  = EndOfInput
-  | Empty
-  | Unexpected String
+  = Empty
+  | EndOfInput
+  | Unexpected Char String
   deriving (Eq, Show)
 
 newtype Parser a = Parser {runParser :: String -> Either [Error] (a, String)}
@@ -47,4 +47,4 @@ satisfy predicate = Parser $ \case
   [] -> Left [EndOfInput]
   x : xs
     | predicate x -> Right (x, xs)
-    | otherwise -> Left [Unexpected [x]]
+    | otherwise -> Left [Unexpected x (x : xs)]
