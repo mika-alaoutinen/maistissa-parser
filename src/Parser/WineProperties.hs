@@ -7,7 +7,7 @@ where
 
 import Control.Applicative ((<|>))
 import Parser.Combinators (separatedBy)
-import Parser.Lines (parseDouble, parseString, parseStrings)
+import Parser.Lines (parseNumber, parseString, parseStrings)
 import Parser.Parser (Parser (..))
 import Parser.Predicates.Chars (newline)
 
@@ -20,14 +20,6 @@ data WineProperty
   | Url (Maybe String)
   deriving (Show, Eq)
 
-testStr =
-  "VIINI: Apothic Dark 2015\n\
-  \Maa: Espanja\n\
-  \Hinta: 13.49\n\
-  \Kuvaus: Pehmeä ja hedelmäinen, täyteläinen\n\
-  \SopiiNautittavaksi: seurustelujuomana, pikkusuolaiset, pasta ja pizza, grilliruoka\n\
-  \url: https://alko.fi/123"
-
 name :: Parser WineProperty
 name = Name <$> parseString "VIINI"
 
@@ -35,7 +27,7 @@ country :: Parser WineProperty
 country = Country <$> parseString "Maa"
 
 price :: Parser WineProperty
-price = Price <$> parseDouble "Hinta"
+price = Price <$> parseNumber "Hinta"
 
 description :: Parser WineProperty
 description = Description <$> parseStrings "Kuvaus"

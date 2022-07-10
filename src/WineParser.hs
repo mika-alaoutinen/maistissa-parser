@@ -6,14 +6,6 @@ import Model.Wine (Wine (..))
 import Parser.Parser (Parser (..))
 import Parser.WineProperties (WineProperty (..), winePropertiesParser)
 
-testStr =
-  "VIINI: Apothic Dark 2015\n\
-  \Maa: Espanja\n\
-  \Hinta: 13.49\n\
-  \Kuvaus: Pehmeä ja hedelmäinen, täyteläinen\n\
-  \SopiiNautittavaksi: seurustelujuomana, pikkusuolaiset, pasta ja pizza, grilliruoka\n\
-  \url: https://alko.fi/123"
-
 parseWine :: String -> Maybe Wine
 parseWine input = do
   (wineProperties, _) <- runParser winePropertiesParser input
