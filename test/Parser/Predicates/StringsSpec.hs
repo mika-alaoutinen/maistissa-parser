@@ -12,7 +12,7 @@ spec = do
     it "should parse abc from abcdef" $ do
       runParser (string "abc") input `shouldBe` Right ("abc", "def")
     it "should return Left when predicate is not found in input" $ do
-      runParser (string "x") input `shouldBe` Left [Unexpected "x" input]
+      runParser (string "x") input `shouldBe` Left [Unexpected 'x' input]
 
   describe "Parses any string input" $ do
     it "should parse entire input" $ do

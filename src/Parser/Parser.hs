@@ -9,7 +9,7 @@ data Error
   = Empty
   | EndOfInput
   | NotFound String
-  | Unexpected String String
+  | Unexpected Char String
   deriving (Eq, Show)
 
 newtype Parser a = Parser {runParser :: String -> Either [Error] (a, String)}

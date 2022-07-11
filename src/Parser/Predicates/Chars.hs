@@ -8,7 +8,7 @@ anyChar :: Parser Char
 anyChar = satisfy isPrint NotFound
 
 char :: Char -> Parser Char
-char c = charParser c (Unexpected [c])
+char c = charParser c (Unexpected c)
 
 newline :: Parser Char
 newline = unixNewline <|> windowsNewline

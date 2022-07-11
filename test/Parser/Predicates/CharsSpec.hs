@@ -15,7 +15,7 @@ spec = do
     it "should parse 'a' from abc" $ do
       runParser (char 'a') input `shouldBe` Right ('a', "bc")
     it "should return Left on parse fail" $ do
-      runParser (char 'x') input `shouldBe` Left [Unexpected "x" input]
+      runParser (char 'x') input `shouldBe` Left [Unexpected 'x' input]
 
   describe "Parses any char from input" $ do
     it "should parse 'a' from abc" $ do
