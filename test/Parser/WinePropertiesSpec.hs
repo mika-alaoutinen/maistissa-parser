@@ -31,7 +31,7 @@ spec = do
 
   describe "Parses Nothing on invalid input" $ do
     it "should return Nothing on incorrect prefix" $ do
-      parseProp "invalid: Apothic Dark 2015" `shouldBe` Left [Unexpected 'i' "invalid: Apothic Dark 2015"]
+      parseProp "invalid: Apothic Dark 2015" `shouldBe` Left [Unexpected "i" "invalid: Apothic Dark 2015"]
     it "should return Nothing on empty value" $ do
       parseProp "Maa: " `shouldBe` Left [EndOfInput]
 

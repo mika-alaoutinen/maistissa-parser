@@ -28,4 +28,4 @@ mkWine
     Description description,
     FoodPairings foodPairings
     ] = Right Wine {url = Nothing, ..}
-mkWine _ = Left [Unexpected 'p' "placeholder"]
+mkWine _ = Left [Unexpected "p" "placeholder"]
