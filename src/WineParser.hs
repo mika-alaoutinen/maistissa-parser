@@ -3,13 +3,13 @@
 module WineParser (parseWine) where
 
 import Model.Wine (Wine (..))
-import Parser.Parser (Parser (..))
+import Parser.Parser (Error (..), Parser (..))
 import Parser.WineProperties (WineProperty (..), winePropertiesParser)
 
 parseWine :: String -> Maybe Wine
-parseWine input = do
-  (wineProperties, _) <- runParser winePropertiesParser input
-  mkWine wineProperties
+parseWine input = case runParser winePropertiesParser input of
+  Right (wineProperties, _) -> mkWine wineProperties
+  Left _ -> Nothing
 
 -- Helpers
 mkWine :: [WineProperty] -> Maybe Wine

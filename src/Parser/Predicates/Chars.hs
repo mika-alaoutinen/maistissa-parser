@@ -1,17 +1,24 @@
-module Parser.Predicates.Chars where
+module Parser.Predicates.Chars (anyChar, char, newline, space) where
 
 import Control.Applicative ((<|>))
 import Data.Char (isDigit, isPrint, isSpace)
-import Parser.Parser (Parser, satisfy)
+import Parser.Parser (Error (..), Parser, satisfy)
 
 anyChar :: Parser Char
-anyChar = satisfy isPrint
+anyChar = satisfy isPrint Unexpected
 
 char :: Char -> Parser Char
-char input = satisfy (== input)
+char c = charParser c (Expected c)
 
 newline :: Parser Char
-newline = char '\n' <|> (char '\r' *> char '\n')
+newline = unixNewline <|> windowsNewline
+  where
+    unixNewline = charParser '\n' Unexpected
+    windowsNewline = charParser '\r' Unexpected *> charParser '\n' Unexpected
 
 space :: Parser Char
-space = satisfy isSpace
+space = satisfy isSpace Unexpected
+
+-- Helpers
+charParser :: Char -> (Char -> Error) -> Parser Char
+charParser c = satisfy (== c)

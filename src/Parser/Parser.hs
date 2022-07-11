@@ -3,16 +3,24 @@
 module Parser.Parser where
 
 import Control.Applicative (Alternative (empty, (<|>)))
+import Data.List (nub)
 
-newtype Parser a = Parser {runParser :: String -> Maybe (a, String)}
+data Error
+  = Empty
+  | EndOfInput
+  | Expected Char Char
+  | Unexpected Char
+  deriving (Eq, Show)
+
+newtype Parser a = Parser {runParser :: String -> Either [Error] (a, String)}
 
 instance Functor Parser where
   fmap fn (Parser parser) = Parser $ \input -> do
-    (parsed, unparsed) <- parser input
-    pure (fn parsed, unparsed)
+    (parsed, rest) <- parser input
+    pure (fn parsed, rest)
 
 instance Applicative Parser where
-  pure a = Parser $ \input -> Just (a, input)
+  pure a = Parser $ \input -> Right (a, input)
 
   Parser p1 <*> Parser p2 = Parser $ \input -> do
     (p1', unparsed) <- p1 input
@@ -27,15 +35,17 @@ instance Monad Parser where
     runParser (continuation parsed) unparsed
 
 instance Alternative Parser where
-  empty = Parser $ const Nothing
+  empty = Parser $ \_ -> Left [Empty]
 
   Parser p1 <|> Parser p2 = Parser $ \input -> case p1 input of
-    Just result -> Just result
-    Nothing -> p2 input
+    Left error1 -> case p2 input of
+      Left error2 -> Left $ nub $ error1 <> error2
+      Right result -> Right result
+    Right result -> Right result
 
-satisfy :: (Char -> Bool) -> Parser Char
-satisfy predicate = Parser $ \case
-  [] -> Nothing
+satisfy :: (Char -> Bool) -> (Char -> Error) -> Parser Char
+satisfy predicate mkError = Parser $ \case
+  [] -> Left [EndOfInput]
   x : xs
-    | predicate x -> Just (x, xs)
-    | otherwise -> Nothing
+    | predicate x -> Right (x, xs)
+    | otherwise -> Left [mkError x]
