@@ -6,13 +6,13 @@ import Model.Wine (Wine (..))
 import Parser.Parser (Error (..), Parser (..))
 import Parser.WineProperties (WineProperty (..), winePropertiesParser)
 
-parseWine :: String -> Either [Error] Wine
-parseWine input = do
-  (wineProperties, _) <- runParser winePropertiesParser input
-  mkWine wineProperties
+parseWine :: String -> Maybe Wine
+parseWine input = case runParser winePropertiesParser input of
+  Right (wineProperties, _) -> mkWine wineProperties
+  Left _ -> Nothing
 
 -- Helpers
-mkWine :: [WineProperty] -> Either [Error] Wine
+mkWine :: [WineProperty] -> Maybe Wine
 mkWine
   [ Name name,
     Country country,
@@ -20,12 +20,12 @@ mkWine
     Description description,
     FoodPairings foodPairings,
     Url url
-    ] = Right Wine {..}
+    ] = Just Wine {..}
 mkWine
   [ Name name,
     Country country,
     Price price,
     Description description,
     FoodPairings foodPairings
-    ] = Right Wine {url = Nothing, ..}
-mkWine _ = Left [Unexpected 'p' "placeholder"]
+    ] = Just Wine {url = Nothing, ..}
+mkWine _ = Nothing
