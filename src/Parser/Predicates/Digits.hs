@@ -6,7 +6,7 @@ import Parser.Parser (Error (..), Parser (..), satisfy)
 import Parser.Predicates.Chars (char)
 
 digit :: Parser Int
-digit = digitToInt <$> satisfy isDigit NotFound
+digit = digitToInt <$> satisfy isDigit Unexpected
 
 digits :: Parser [Int]
 digits = some digit

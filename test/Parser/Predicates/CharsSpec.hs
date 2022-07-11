@@ -15,7 +15,7 @@ spec = do
     it "should parse 'a' from abc" $ do
       runParser (char 'a') input `shouldBe` Right ('a', "bc")
     it "should return Left on parse fail" $ do
-      runParser (char 'x') input `shouldBe` Left [Unexpected 'x' input]
+      runParser (char 'x') input `shouldBe` Left [Expected 'x' 'a']
 
   describe "Parses any char from input" $ do
     it "should parse 'a' from abc" $ do
@@ -27,13 +27,13 @@ spec = do
     it "should parse newline" $ do
       runParser newline "\nabc" `shouldBe` Right ('\n', "abc")
     it "should return Left on parse fail" $ do
-      runParser newline input `shouldBe` Left [NotFound input]
+      runParser newline input `shouldBe` Left [Unexpected 'a']
 
   describe "Parses a space from input" $ do
     it "should parse space" $ do
       runParser space " abc" `shouldBe` Right (' ', "abc")
     it "should return Left on parse fail" $ do
-      runParser space input `shouldBe` Left [NotFound input]
+      runParser space input `shouldBe` Left [Unexpected 'a']
 
   describe "QuickCheck test cases" $ do
     prop "any char" prop_anyChar

@@ -8,8 +8,8 @@ import Data.List (nub)
 data Error
   = Empty
   | EndOfInput
-  | NotFound String
-  | Unexpected Char String
+  | Expected Char Char
+  | Unexpected Char
   deriving (Eq, Show)
 
 newtype Parser a = Parser {runParser :: String -> Either [Error] (a, String)}
@@ -43,9 +43,9 @@ instance Alternative Parser where
       Right result -> Right result
     Right result -> Right result
 
-satisfy :: (Char -> Bool) -> (String -> Error) -> Parser Char
+satisfy :: (Char -> Bool) -> (Char -> Error) -> Parser Char
 satisfy predicate mkError = Parser $ \case
   [] -> Left [EndOfInput]
   x : xs
     | predicate x -> Right (x, xs)
-    | otherwise -> Left [mkError (x : xs)]
+    | otherwise -> Left [mkError x]
