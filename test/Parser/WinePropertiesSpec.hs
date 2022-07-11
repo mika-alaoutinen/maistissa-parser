@@ -1,6 +1,6 @@
 module Parser.WinePropertiesSpec (spec) where
 
-import Data.Either (fromRight)
+import Data.Either (fromLeft, fromRight)
 import Parser.Parser (Error (..), Parser (..))
 import Parser.WineProperties
 import Test.Hspec
@@ -31,9 +31,9 @@ spec = do
 
   describe "Parses Nothing on invalid input" $ do
     it "should return Nothing on incorrect prefix" $ do
-      parseProp "invalid: Apothic Dark 2015" `shouldBe` Left [Unexpected 'i' "invalid: Apothic Dark 2015"]
+      length (parsedErrors "invalid: Apothic Dark 2015") `shouldBe` 6
     it "should return Nothing on empty value" $ do
-      parseProp "Maa: " `shouldBe` Left [EndOfInput]
+      length (parsedErrors "Maa: ") `shouldBe` 6
 
 -- Helpers
 wineEntry =
@@ -56,3 +56,6 @@ parsedPropertiesCount :: Either [Error] Int
 parsedPropertiesCount = do
   (parsedProperties, _) <- parseProps wineEntry
   return $ length parsedProperties
+
+parsedErrors :: String -> [Error]
+parsedErrors input = fromLeft [] (parseProp input)
