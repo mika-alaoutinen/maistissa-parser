@@ -66,6 +66,7 @@ test-suite maistissa-parser-test
       Parser.Predicates.CharsSpec
       Parser.Predicates.DigitsSpec
       Parser.Predicates.StringsSpec
+      Parser.WineParserSpec
       Parser.WinePropertiesSpec
       TestUtils
       Paths_maistissa_parser
