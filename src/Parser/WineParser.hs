@@ -1,15 +1,19 @@
 {-# LANGUAGE RecordWildCards #-}
 
-module WineParser (parseWine) where
+module Parser.WineParser (wineParser, winesParser) where
 
+import Data.Maybe (catMaybes)
 import Model.Wine (Wine (..))
-import Parser.Parser (Error (..), Parser (..))
+import Parser.Combinators (separatedBy)
+import Parser.Parser (Parser (..))
+import Parser.Predicates.Chars (newline)
 import Parser.WineProperties (WineProperty (..), winePropertiesParser)
 
-parseWine :: String -> Maybe Wine
-parseWine input = case runParser winePropertiesParser input of
-  Right (wineProperties, _) -> mkWine wineProperties
-  Left _ -> Nothing
+wineParser :: Parser (Maybe Wine)
+wineParser = mkWine <$> winePropertiesParser
+
+winesParser :: Parser [Wine]
+winesParser = catMaybes <$> wineParser `separatedBy` newline
 
 -- Helpers
 mkWine :: [WineProperty] -> Maybe Wine

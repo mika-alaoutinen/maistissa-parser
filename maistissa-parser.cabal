@@ -33,8 +33,9 @@ library
       Parser.Predicates.Chars
       Parser.Predicates.Digits
       Parser.Predicates.Strings
+      Parser.WineParser
       Parser.WineProperties
-      WineParser
+      ParserMain
   other-modules:
       Paths_maistissa_parser
   hs-source-dirs:
@@ -65,6 +66,7 @@ test-suite maistissa-parser-test
       Parser.Predicates.CharsSpec
       Parser.Predicates.DigitsSpec
       Parser.Predicates.StringsSpec
+      Parser.WineParserSpec
       Parser.WinePropertiesSpec
       TestUtils
       Paths_maistissa_parser

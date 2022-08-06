@@ -4,8 +4,6 @@ import Data.Either (fromLeft, fromRight)
 import Parser.Parser (Error (..), Parser (..))
 import Parser.WineProperties
 import Test.Hspec
-import Test.Hspec.QuickCheck
-import Test.QuickCheck
 
 spec :: Spec
 spec = do
